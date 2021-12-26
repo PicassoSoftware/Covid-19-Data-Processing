@@ -49,7 +49,7 @@ namespace Covid_19_Data_Processing.Data
         Task EnYayginHastalikBilgisi();
 
         // Belirli şehirde doğan elemanlar arasında en sık görülen ilk üç hastalık rapor edilebilmelidir.
-        Task SehireHastalikBilgisi(string sehir);
+        Task SehirHastalikBilgisi(string sehir);
 
         // En yaygın kullanılan ilk üç ilacı kullanan elemanların COVID geçirme durumu rapor edilebilmelidir.
         Task YayginIlacCovidBilgisi();
@@ -64,7 +64,7 @@ namespace Covid_19_Data_Processing.Data
         Task AsiyaGoreCovidBilgisi();
 
         // Belirli bir kronik hastalığa göre, çalışanların COVID testinin negatife dönmesi için geçen süre rapor edilebilmelidir.
-        Task KronikCovidSuresiBilgisi();
+        Task KronikCovidSuresiBilgisi(string kronik);
 
         // Kan grubuna göre COVID’e yakalanma sıklığı rapor edilebilmelidir.
         Task KanGrubuCovidBilgisi();
@@ -81,7 +81,7 @@ namespace Covid_19_Data_Processing.Data
         // Biontech ve sinovac aşılarının etkinliği, COVID geçirme süresi göz önüne alınarak kıyaslanabilmelidir.
         Task AsiEtkinlikBilgisi();
 
-        // Haftasona çalışan kişiler arasında COVID gözükme miktarı.
+        // Haftasonu çalışan kişiler arasında COVID gözükme miktarı.
         Task HaftasonuCovidBilgisi();
 
         // En sık hasta olan ilk 10 kişinin son bir ay içerisinde COVID’e yakalanma durumları listelenebilmelidir.

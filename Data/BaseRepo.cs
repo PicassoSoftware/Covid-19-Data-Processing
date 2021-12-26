@@ -127,7 +127,7 @@ namespace Covid_19_Data_Processing.Data
             throw new NotImplementedException();
         }
 
-        public Task KronikCovidSuresiBilgisi()
+        public Task KronikCovidSuresiBilgisi(string kronik)
         {
             throw new NotImplementedException();
         }
@@ -136,8 +136,8 @@ namespace Covid_19_Data_Processing.Data
         {
             throw new NotImplementedException();
         }
-
-        public Task SehireHastalikBilgisi(string sehir)
+        
+        public Task SehirHastalikBilgisi(string sehir)
         {
             throw new NotImplementedException();
         }

@@ -5,9 +5,10 @@ namespace Covid_19_Data_Processing.Models
 {
     public class EgitimCovidIstatistik
     {
-        public int Lisans { get; set; }              
-        public int YuksekLisans { get; set; }              
-        public int Doktora { get; set; }              
-        public int Diger { get; set; }              
+        public double Lisans { get; set; }              
+        public double YuksekLisans { get; set; }              
+        public double Doktora { get; set; }              
+        public double Diger { get; set; }              
     }
 }
+
