@@ -12,7 +12,7 @@ namespace Covid_19_Data_Processing.Data
             throw new NotImplementedException();
         }
 
-        public Task AddCalismaSaaatleri(CalismaSaatleri element)
+        public Task AddCalismaSaaatleri(CalismaSaati element)
         {
             throw new NotImplementedException();
         }
@@ -29,6 +29,7 @@ namespace Covid_19_Data_Processing.Data
 
         public Task AddPersonel(Personel element)
         {
+            
             throw new NotImplementedException();
         }
 
@@ -67,7 +68,7 @@ namespace Covid_19_Data_Processing.Data
             throw new NotImplementedException();
         }
 
-        public Task DeleteCalismaSaatleri(int tc)
+        public Task DeleteCalismaSaati(int tc)
         {
             throw new NotImplementedException();
         }
@@ -97,7 +98,7 @@ namespace Covid_19_Data_Processing.Data
             throw new NotImplementedException();
         }
 
-        public Task EnTemasliCalisanlar()
+        public Task TemasBagimlilari()
         {
             throw new NotImplementedException();
         }
@@ -147,7 +148,7 @@ namespace Covid_19_Data_Processing.Data
             throw new NotImplementedException();
         }
 
-        public Task UpdateCalismaSaatleri(int tc, CalismaSaatleri element)
+        public Task UpdateCalismaSaati(int tc, CalismaSaati element)
         {
             throw new NotImplementedException();
         }

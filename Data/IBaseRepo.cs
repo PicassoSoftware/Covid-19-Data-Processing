@@ -11,7 +11,7 @@ namespace Covid_19_Data_Processing.Data
         Task AddHastalikKaydi(HastalikKaydi element);
         Task AddRecete(Recete element);
         Task AddCovidKaydi (CovidKaydi element);
-        Task AddCalismaSaaatleri (CalismaSaatleri element);
+        Task AddCalismaSaaatleri (CalismaSaati element);
         Task AddAsi (Asi element);
 
 
@@ -20,7 +20,7 @@ namespace Covid_19_Data_Processing.Data
 
 
         Task DeletePersonel(int tc);
-        Task DeleteCalismaSaatleri(int tc);
+        Task DeleteCalismaSaati(int tc);
         Task DeleteHastalikKaydi(int tc);
         Task DeleteRecete(int hastalik_id);
         Task DeleteAsi(int tc, DateTime asi_olma_tarihi);
@@ -33,7 +33,7 @@ namespace Covid_19_Data_Processing.Data
 
 
         Task UpdatePersonel(int tc, Personel element);
-        Task UpdateCalismaSaatleri(int tc, CalismaSaatleri element);
+        Task UpdateCalismaSaati(int tc, CalismaSaati element);
         Task UpdateHastalikKaydi(int tc, HastalikKaydi element);
         Task UpdateRecete(int hastalik_id, string ilac, Recete element);
         Task UpdateAsi(int tc, DateTime asi_olma_tarihi, Asi element);
@@ -76,7 +76,7 @@ namespace Covid_19_Data_Processing.Data
         Task CovidBelirtileri();
 
         // En fazla temasta bulunmuş ilk 3 çalışan listelenebilmelidir.
-        Task EnTemasliCalisanlar();
+        Task TemasBagimlilari();
 
         // Biontech ve sinovac aşılarının etkinliği, COVID geçirme süresi göz önüne alınarak kıyaslanabilmelidir.
         Task AsiEtkinlikBilgisi();
