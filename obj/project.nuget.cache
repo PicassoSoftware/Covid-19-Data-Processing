@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "FI001pVKuhXcrfGpZkfvR8badDCEnHWZof8exzj6wKfeZVHXhRD2Lgq4Sgk/QzBfEyQnVMRr3rRHJoG7vOQOag==",
+  "dgSpecHash": "3rS+jrUEssYNFZxkegokni6R0zcYQCmzGtn2u8uhZSNGiHJi04jB0af9XYm9g5kuA5gFXpcJw1i3oHs9NCNY1A==",
   "success": true,
   "projectFilePath": "C:\\Users\\Erkin\\Documents\\GitHub\\Covid-19-Data-Processing\\Covid-19-Data-Processing.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Erkin\\.nuget\\packages\\automapper\\10.1.1\\automapper.10.1.1.nupkg.sha512",
+    "C:\\Users\\Erkin\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.1.1\\automapper.extensions.microsoft.dependencyinjection.8.1.1.nupkg.sha512",
     "C:\\Users\\Erkin\\.nuget\\packages\\fromheaderattribute\\2.0.4\\fromheaderattribute.2.0.4.nupkg.sha512",
     "C:\\Users\\Erkin\\.nuget\\packages\\microsoft.aspnet.webapi.client\\5.2.4\\microsoft.aspnet.webapi.client.5.2.4.nupkg.sha512",
     "C:\\Users\\Erkin\\.nuget\\packages\\microsoft.aspnet.webapi.core\\5.2.4\\microsoft.aspnet.webapi.core.5.2.4.nupkg.sha512",
@@ -84,7 +86,7 @@
     "C:\\Users\\Erkin\\.nuget\\packages\\system.net.sockets\\4.3.0\\system.net.sockets.4.3.0.nupkg.sha512",
     "C:\\Users\\Erkin\\.nuget\\packages\\system.objectmodel\\4.3.0\\system.objectmodel.4.3.0.nupkg.sha512",
     "C:\\Users\\Erkin\\.nuget\\packages\\system.reflection\\4.3.0\\system.reflection.4.3.0.nupkg.sha512",
-    "C:\\Users\\Erkin\\.nuget\\packages\\system.reflection.emit\\4.3.0\\system.reflection.emit.4.3.0.nupkg.sha512",
+    "C:\\Users\\Erkin\\.nuget\\packages\\system.reflection.emit\\4.7.0\\system.reflection.emit.4.7.0.nupkg.sha512",
     "C:\\Users\\Erkin\\.nuget\\packages\\system.reflection.emit.ilgeneration\\4.3.0\\system.reflection.emit.ilgeneration.4.3.0.nupkg.sha512",
     "C:\\Users\\Erkin\\.nuget\\packages\\system.reflection.emit.lightweight\\4.3.0\\system.reflection.emit.lightweight.4.3.0.nupkg.sha512",
     "C:\\Users\\Erkin\\.nuget\\packages\\system.reflection.extensions\\4.3.0\\system.reflection.extensions.4.3.0.nupkg.sha512",

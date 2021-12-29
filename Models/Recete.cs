@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 
 namespace Covid_19_Data_Processing.Models
 {
