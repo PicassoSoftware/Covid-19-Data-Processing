@@ -302,7 +302,7 @@ namespace Covid_19_Data_Processing.Data
 
         public async Task UpdateHastalikKaydi(string tc, HastalikKaydi element)
         {
-            var db_element = await _context.HastalikKayitlari.FindAsync(new {tc, baslangic_tarihi});
+            var db_element = await _context.HastalikKayitlari.FindAsync(tc);
 
             if (db_element == null)
             {
@@ -339,7 +339,7 @@ namespace Covid_19_Data_Processing.Data
 
         public async Task UpdateRecete(int hastalik_id, string ilac, Recete element)
         {
-            var db_element = await _context.Receteler.FindAsync(new {tc, baslangic_tarihi});
+            var db_element = await _context.Receteler.FindAsync(new {hastalik_id, ilac});
 
             if (db_element == null)
             {

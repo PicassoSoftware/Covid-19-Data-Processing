@@ -10,6 +10,5 @@ namespace Commander.Controllers
     public class BaseController : ControllerBase
     {
         
-        
     }
 }
