@@ -29,7 +29,10 @@ namespace Covid_19_Data_Processing.Data
 
         public async Task AddCalismaSaaatleri(CalismaSaati element)
         {
-            throw new NotImplementedException();
+             if (element == null) throw new ArgumentNullException(nameof(element));
+
+            _context.CalismaSaatleri.Add(element);
+            await _context.SaveChangesAsync();
         }
 
         public async Task AddCovidKaydi(PostCovidKaydi element)
@@ -60,7 +63,10 @@ namespace Covid_19_Data_Processing.Data
 
         public async Task AddRecete(Recete element)
         {
-            throw new NotImplementedException();
+            if (element == null) throw new ArgumentNullException(nameof(element));
+
+            _context.Receteler.Add(element);
+            await _context.SaveChangesAsync();
         }
 
         public async Task AsiEtkinlikBilgisi()
@@ -90,12 +96,37 @@ namespace Covid_19_Data_Processing.Data
 
         public async Task DeleteAsi(string tc, DateTime asi_olma_tarihi)
         {
-            throw new NotImplementedException();
+             if (tc.Length != 11)
+            {
+                _context.Asilar.Remove(new Asi
+                {
+                    TC = tc,
+                    AsiOlmaTarihi = asi_olma_tarihi
+                });
+
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new ArgumentNullException();
+            }
         }
 
         public async Task DeleteCalismaSaati(string tc)
         {
-            throw new NotImplementedException();
+             if (tc.Length != 11)
+            {
+                _context.CalismaSaatleri.Remove(new CalismaSaati
+                {
+                    TC = tc,
+                });
+
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new ArgumentNullException();
+            }
         }
 
         public async Task DeleteCovidKaydi(string tc, DateTime baslangic_tarihi)
@@ -123,7 +154,19 @@ namespace Covid_19_Data_Processing.Data
 
         public async Task DeletePersonel(string tc)
         {
-            throw new NotImplementedException();
+             if (tc.Length != 11)
+            {
+                _context.Personeller.Remove(new Personel
+                {
+                    TC = tc,
+                });
+
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new ArgumentNullException();
+            }
         }
 
         public async Task DeleteRecete(int hastalik_id)
