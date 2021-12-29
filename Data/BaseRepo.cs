@@ -258,7 +258,19 @@ namespace Covid_19_Data_Processing.Data
 
         public async Task UpdateCalismaSaati(string tc, CalismaSaati element)
         {
-            throw new NotImplementedException();
+             var db_element = await _context.CalismaSaatleri.FindAsync(tc);
+
+            if (db_element == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (element.TC.Length != 0) db_element.TC = element.TC;
+            if (element.HaftaninGunleri.Length != 0) db_element.HaftaninGunleri = element.HaftaninGunleri;
+            if (element.Baslangic != new DateTime(1,1,1)) db_element.Baslangic = element.Baslangic;
+            if (element.Bitis != new DateTime(1,1,1)) db_element.Bitis = element.Bitis;
+            
+            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateCovidKaydi(string tc, DateTime baslangic_tarihi, CovidKaydi element)
