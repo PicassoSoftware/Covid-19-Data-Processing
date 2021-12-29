@@ -263,7 +263,18 @@ namespace Covid_19_Data_Processing.Data
 
         public async Task UpdateCovidKaydi(string tc, DateTime baslangic_tarihi, CovidKaydi element)
         {
-            throw new NotImplementedException();
+            var db_element = await _context.CovidKayitlari.FindAsync(new {tc, baslangic_tarihi});
+
+            if (db_element == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (element.TC.Length != 0) db_element.TC = element.TC;
+            if (element.BaslangicTarihi != new DateTime(1,1,1)) db_element.BaslangicTarihi = element.BaslangicTarihi;
+            if (element.BitisTarihi != new DateTime(1,1,1)) db_element.BitisTarihi = element.BitisTarihi;
+            
+            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateHastalikKaydi(string tc, HastalikKaydi element)
@@ -273,7 +284,23 @@ namespace Covid_19_Data_Processing.Data
 
         public async Task UpdatePersonel(string tc, Personel element)
         {
-            throw new NotImplementedException();
+            var db_element = await _context.Personeller.FindAsync(tc);
+
+            if (db_element == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (element.TC.Length != 0) db_element.TC = element.TC;
+            if (element.Name.Length != 0) db_element.Name = element.Name;
+            if (element.Surname.Length != 0) db_element.Surname = element.Surname;
+            if (element.KanGrubu.Length != 0) db_element.KanGrubu = element.KanGrubu;
+            if (element.DogduguSehir.Length != 0) db_element.DogduguSehir = element.DogduguSehir;
+            if (element.Pozisyon.Length != 0) db_element.Pozisyon = element.Pozisyon;
+            if (element.Maas != -1) db_element.Maas = element.Maas;
+            if (element.Egitim != -1) db_element.Egitim = element.Egitim;
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateRecete(int hastalik_id, string ilac, Recete element)

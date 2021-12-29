@@ -10,7 +10,7 @@ namespace Covid_19_Data_Processing.Models
         public string Name { get; set; }
         public string Surname { get; set; }
         public string KanGrubu { get; set; }
-        public int DogduguSehir { get; set; }          
+        public string DogduguSehir { get; set; }          
         public string Pozisyon { get; set; }          
         public int Maas { get; set; }          
         public int Egitim { get; set; }     
