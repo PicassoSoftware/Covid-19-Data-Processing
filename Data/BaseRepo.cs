@@ -291,7 +291,18 @@ namespace Covid_19_Data_Processing.Data
 
         public async Task UpdateHastalikKaydi(string tc, HastalikKaydi element)
         {
-            throw new NotImplementedException();
+            var db_element = await _context.HastalikKayitlari.FindAsync(new {tc, baslangic_tarihi});
+
+            if (db_element == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (element.TC.Length != 0) db_element.TC = element.TC;
+            if (element.HastalikIsmi.Length != 0) db_element.HastalikIsmi = element.HastalikIsmi;
+            if (element.HastaOlduguTarih != new DateTime(1,1,1)) db_element.HastaOlduguTarih = element.HastaOlduguTarih;
+            
+            await _context.SaveChangesAsync();
         }
 
         public async Task UpdatePersonel(string tc, Personel element)
@@ -317,7 +328,19 @@ namespace Covid_19_Data_Processing.Data
 
         public async Task UpdateRecete(int hastalik_id, string ilac, Recete element)
         {
-            throw new NotImplementedException();
+            var db_element = await _context.Receteler.FindAsync(new {tc, baslangic_tarihi});
+
+            if (db_element == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (element.Ilac.Length != 0) db_element.Ilac = element.Ilac;
+            if (element.HastalikID != 0) db_element.HastalikID = element.HastalikID;
+            if (element.Doz != 0) db_element.Doz = element.Doz;
+            
+            
+            await _context.SaveChangesAsync();
         }
 
         public async Task YayginIlacCovidBilgisi()
