@@ -253,7 +253,18 @@ namespace Covid_19_Data_Processing.Data
 
         public async Task UpdateAsi(string tc, DateTime asi_olma_tarihi, Asi element)
         {
-            throw new NotImplementedException();
+           var db_element = await _context.Asilar.FindAsync(new {tc, asi_olma_tarihi});
+
+            if (db_element == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (element.TC.Length != 0) db_element.TC = element.TC;
+            if (element.AsiOlmaTarihi != new DateTime(1,1,1)) db_element.AsiOlmaTarihi= element.AsiOlmaTarihi;
+            if (element.AsiIsmi.Length != 0 ) db_element.AsiIsmi= element.AsiIsmi;
+            
+            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateCalismaSaati(string tc, CalismaSaati element)
