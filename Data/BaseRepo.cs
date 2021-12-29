@@ -57,8 +57,10 @@ namespace Covid_19_Data_Processing.Data
 
         public async Task AddPersonel(Personel element)
         {
+            if (element == null) throw new ArgumentNullException(nameof(element));
 
-            throw new NotImplementedException();
+            _context.Personeller.Add(element);
+            await _context.SaveChangesAsync();
         }
 
         public async Task AddRecete(Recete element)
@@ -149,7 +151,20 @@ namespace Covid_19_Data_Processing.Data
 
         public async Task DeleteHastalikKaydi(string tc)
         {
-            throw new NotImplementedException();
+             
+            if (tc.Length != 11)
+            {
+                _context.HastalikKayitlari.Remove(new HastalikKaydi
+                {
+                    TC = tc,
+                });
+
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new ArgumentNullException();
+            }
         }
 
         public async Task DeletePersonel(string tc)
