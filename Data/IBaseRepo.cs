@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Covid_19_Data_Processing.DTOs;
 using Covid_19_Data_Processing.Models;
@@ -56,13 +57,13 @@ namespace Covid_19_Data_Processing.Data
         Task YayginIlacCovidBilgisi(); // Esra
 
         // Belirli bir ilacı kullanan çalışanların COVID geçirme durumu rapor edilebilmelidir.
-        Task IlacaGoreCovid(string ilac);
+        Task<List<CalisanCovidBilgisi>> IlacaGoreCovid(string ilac); // Erkin   // Test Edildi, Çalışıyor
 
         // Biontech aşısı olan ve belirli bir hastalığı önceden geçirmiş olan çalışanlardan COVID’e yakalananlar listelenebilmelidir.
         Task BiontechVeHastalikCovidBilgisi(string hastalik);
 
         // Aşı vurulma durumuna göre COVID hastalığına yakalanma oranı rapor edilebilmelidir.
-        Task AsiyaGoreCovidBilgisi(); // Sema
+        Task<AsiCovidOran> AsiyaGoreCovidBilgisi(); // Sema
 
         // Belirli bir kronik hastalığa göre, çalışanların COVID testinin negatife dönmesi için geçen süre rapor edilebilmelidir.
         Task KronikCovidSuresiBilgisi(string kronik);

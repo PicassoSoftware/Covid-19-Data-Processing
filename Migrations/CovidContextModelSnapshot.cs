@@ -196,8 +196,8 @@ namespace Covid_19_Data_Processing.Migrations
                     b.Property<string>("TC")
                         .HasColumnType("text");
 
-                    b.Property<int>("DogduguSehir")
-                        .HasColumnType("integer");
+                    b.Property<string>("DogduguSehir")
+                        .HasColumnType("text");
 
                     b.Property<int>("Egitim")
                         .HasColumnType("integer");

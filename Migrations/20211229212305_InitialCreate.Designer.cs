@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Covid_19_Data_Processing.Migrations
 {
     [DbContext(typeof(CovidContext))]
-    [Migration("20211228134406_InitialCreate")]
+    [Migration("20211229212305_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -198,8 +198,8 @@ namespace Covid_19_Data_Processing.Migrations
                     b.Property<string>("TC")
                         .HasColumnType("text");
 
-                    b.Property<int>("DogduguSehir")
-                        .HasColumnType("integer");
+                    b.Property<string>("DogduguSehir")
+                        .HasColumnType("text");
 
                     b.Property<int>("Egitim")
                         .HasColumnType("integer");

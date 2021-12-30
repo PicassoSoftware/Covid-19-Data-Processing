@@ -16,7 +16,7 @@ namespace Covid_19_Data_Processing.Migrations
                     Name = table.Column<string>(nullable: false),
                     Surname = table.Column<string>(nullable: true),
                     KanGrubu = table.Column<string>(nullable: true),
-                    DogduguSehir = table.Column<int>(nullable: false),
+                    DogduguSehir = table.Column<string>(nullable: true),
                     Pozisyon = table.Column<string>(nullable: true),
                     Maas = table.Column<int>(nullable: false),
                     Egitim = table.Column<int>(nullable: false)
