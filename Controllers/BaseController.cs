@@ -78,6 +78,14 @@ namespace Covid_19_Data_Processing.Controllers
             await _repository.AddPersonel(element);
             return NoContent();
         }
+
+        [HttpPost("kronik")]
+
+        public async Task<ActionResult> AddKronik(Kronik element)
+        {
+            await _repository.AddKronik(element);
+            return NoContent();
+        }
         
 
 
@@ -162,6 +170,12 @@ namespace Covid_19_Data_Processing.Controllers
             return Ok(await _repository.TemasBagimlilari());
         }
 
+        [HttpGet("kronik-covid-suresi-bilgisi/{kronik}")]
+
+        public async Task<ActionResult> KronikCovidSuresiBilgisi(string kronik)
+        {
+            return Ok(await _repository.KronikCovidSuresiBilgisi(kronik));
+        }
         
 
 

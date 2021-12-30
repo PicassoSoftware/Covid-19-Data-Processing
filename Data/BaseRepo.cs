@@ -28,6 +28,14 @@ namespace Covid_19_Data_Processing.Data
             await _context.SaveChangesAsync();
         }
 
+        public async Task AddKronik(Kronik element)
+        {
+            if (element == null) throw new ArgumentNullException(nameof(element));
+
+            _context.Kronikler.Add(element);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task AddCalismaSaaatleri(CalismaSaati element)
         {
             if (element == null) throw new ArgumentNullException(nameof(element));
@@ -306,9 +314,10 @@ namespace Covid_19_Data_Processing.Data
             return ans;
         }
 
-        public async Task KronikCovidSuresiBilgisi(string kronik)
+        public async Task<List<KronikCovidSure>> KronikCovidSuresiBilgisi(string kronik)
         {
-            throw new NotImplementedException();
+            List<int> feriha = (from kr in _context.Kronikler where kr.Hastalik == kronik select kr.CovidID).ToList();
+            return (from covidliler in _context.CovidKayitlari where feriha.Contains(covidliler.ID) select new KronikCovidSure{TC = covidliler.TC, IyilesmeSuresi = (int)(covidliler.BitisTarihi - covidliler.BaslangicTarihi).TotalDays}).ToList();
         }
 
         public async Task CovidIstatistikBilgisi()

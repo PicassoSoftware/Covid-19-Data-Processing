@@ -16,6 +16,7 @@ namespace Covid_19_Data_Processing.Data
         Task AddCalismaSaaatleri (CalismaSaati element);
         Task AddAsi (Asi element);
         Task AddTemasli (Temasli element);
+        Task AddKronik(Kronik element);
 
 
 
@@ -67,7 +68,7 @@ namespace Covid_19_Data_Processing.Data
         Task<AsiCovidOran> AsiyaGoreCovidBilgisi(); // Sema   // Test Edildi, Çalışıyor
 
         // Belirli bir kronik hastalığa göre, çalışanların COVID testinin negatife dönmesi için geçen süre rapor edilebilmelidir.
-        Task KronikCovidSuresiBilgisi(string kronik); // Erkin
+        Task<List<KronikCovidSure>> KronikCovidSuresiBilgisi(string kronik); // Erkin     // Test Edildi, Çalışıyor
 
         // Kan grubuna göre COVID’e yakalanma sıklığı rapor edilebilmelidir.
         Task<IEnumerable<KanGrubuCovid>> KanGrubuCovidBilgisi(); //Esra   // Test Edildi, Çalışıyor
