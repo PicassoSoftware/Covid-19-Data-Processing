@@ -29,6 +29,14 @@ namespace Covid_19_Data_Processing.Controllers
             return NoContent();
         }
 
+        [HttpPost("temasli")]
+
+        public async Task<ActionResult> AddTemasli(Temasli element)
+        {
+            await _repository.AddTemasli(element);
+            return NoContent();
+        }
+
 
         [HttpPost("hastalik-kaydi")]
 
@@ -135,9 +143,23 @@ namespace Covid_19_Data_Processing.Controllers
 
         [HttpGet("asiya-gore-covid-bilgisi")]
 
-        public async Task<ActionResult> AsiyaGoreCovidBilgisi(string ilac)
+        public async Task<ActionResult> AsiyaGoreCovidBilgisi()
         {
             return Ok(await _repository.AsiyaGoreCovidBilgisi());
+        }
+
+        [HttpGet("kan-grubu-covid-bilgisi")]
+
+        public async Task<ActionResult> KanGrubuCovidBilgisi()
+        {
+            return Ok(await _repository.KanGrubuCovidBilgisi());
+        }
+
+        [HttpGet("temas-bagimlilari")]
+
+        public async Task<ActionResult> TemasBagimlilari()
+        {
+            return Ok(await _repository.TemasBagimlilari());
         }
 
         

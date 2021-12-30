@@ -15,6 +15,7 @@ namespace Covid_19_Data_Processing.Data
         Task AddCovidKaydi (PostCovidKaydi element);
         Task AddCalismaSaaatleri (CalismaSaati element);
         Task AddAsi (Asi element);
+        Task AddTemasli (Temasli element);
 
 
 
@@ -60,16 +61,16 @@ namespace Covid_19_Data_Processing.Data
         Task<List<CalisanCovidBilgisi>> IlacaGoreCovid(string ilac); // Erkin   // Test Edildi, Çalışıyor
 
         // Biontech aşısı olan ve belirli bir hastalığı önceden geçirmiş olan çalışanlardan COVID’e yakalananlar listelenebilmelidir.
-        Task BiontechVeHastalikCovidBilgisi(string hastalik);
+        Task BiontechVeHastalikCovidBilgisi(string hastalik); // Erkin
 
         // Aşı vurulma durumuna göre COVID hastalığına yakalanma oranı rapor edilebilmelidir.
-        Task<AsiCovidOran> AsiyaGoreCovidBilgisi(); // Sema
+        Task<AsiCovidOran> AsiyaGoreCovidBilgisi(); // Sema   // Test Edildi, Çalışıyor
 
         // Belirli bir kronik hastalığa göre, çalışanların COVID testinin negatife dönmesi için geçen süre rapor edilebilmelidir.
-        Task KronikCovidSuresiBilgisi(string kronik);
+        Task KronikCovidSuresiBilgisi(string kronik); // Erkin
 
         // Kan grubuna göre COVID’e yakalanma sıklığı rapor edilebilmelidir.
-        Task KanGrubuCovidBilgisi(); //Esra
+        Task<IEnumerable<KanGrubuCovid>> KanGrubuCovidBilgisi(); //Esra   // Test Edildi, Çalışıyor
 
         // Toplam çalışma süresi ile COVID’e yakalanma arasındaki istatistiki bilgi sunulabilmelidir.
         Task CovidIstatistikBilgisi(); // Sema
@@ -78,7 +79,7 @@ namespace Covid_19_Data_Processing.Data
         Task CovidBelirtileri(); //Esra
 
         // En fazla temasta bulunmuş ilk 3 çalışan listelenebilmelidir.
-        Task TemasBagimlilari(); // Hatice
+        Task<IEnumerable<string>> TemasBagimlilari(); // Hatice    // Test Edildi, Çalışıyor
 
         // Biontech ve sinovac aşılarının etkinliği, COVID geçirme süresi göz önüne alınarak kıyaslanabilmelidir.
         Task AsiEtkinlikBilgisi(); // Sema
@@ -90,7 +91,7 @@ namespace Covid_19_Data_Processing.Data
         Task HastalananlarinCovidBilgisi(); // Hatice
 
         // Aşı vurulmayanlar arasında, en uzun süre COVID geçiren kişinin, son 1 yılda geçirmiş olduğu hastalıklar ve verilen reçeteler listelenebilmelidir.
-        Task AsisizEnUzunCovidBilgisi();
+        Task AsisizEnUzunCovidBilgisi(); // Erkin
 
     }
 }

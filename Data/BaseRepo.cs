@@ -36,6 +36,15 @@ namespace Covid_19_Data_Processing.Data
             await _context.SaveChangesAsync();
         }
 
+        public async Task AddTemasli(Temasli element)
+        {
+            if (element == null) throw new ArgumentNullException(nameof(element));
+
+            _context.Temaslilar.Add(element);
+            await _context.SaveChangesAsync();
+        }
+
+
         public async Task AddCovidKaydi(PostCovidKaydi element)
         {
             var db_element = _mapper.Map<CovidKaydi>(element);
@@ -97,11 +106,10 @@ namespace Covid_19_Data_Processing.Data
             covidli_ve_asisiz = covidliler.Count() - covidli_ve_asili;
             asisiz = personeller.Count() - asi_olanlar.Count();
 
-            Console.WriteLine((covidli_ve_asili).ToString());
             return new AsiCovidOran
             {
-                Asili = covidli_ve_asili / asi_olanlar.Count(),
-                Asisiz = covidli_ve_asisiz / asisiz
+                Asili = (double)covidli_ve_asili / asi_olanlar.Count(),
+                Asisiz = (double)covidli_ve_asisiz / asisiz
             };
         }
 
@@ -225,9 +233,9 @@ namespace Covid_19_Data_Processing.Data
             throw new NotImplementedException();
         }
 
-        public async Task TemasBagimlilari()
+        public async Task<IEnumerable<string>> TemasBagimlilari()
         {
-            throw new NotImplementedException();
+            return (from temasli in _context.Temaslilar.GroupBy(c => c.TemasliTC) orderby temasli.Count() select temasli.Key).ToList().Take(3);
         }
 
         public async Task EnYayginHastalikBilgisi()
@@ -260,9 +268,42 @@ namespace Covid_19_Data_Processing.Data
             return ans;
         }
 
-        public async Task KanGrubuCovidBilgisi()
+        public async Task<IEnumerable<KanGrubuCovid>> KanGrubuCovidBilgisi()
         {
-            throw new NotImplementedException();
+            
+            List<string> butun_a_arti = (from personel in _context.Personeller where personel.KanGrubu == "A+" select personel.TC).ToList();
+            List<string> butun_a_eksi = (from personel in _context.Personeller where personel.KanGrubu == "A-" select personel.TC).ToList();
+            List<string> butun_b_arti = (from personel in _context.Personeller where personel.KanGrubu == "B+" select personel.TC).ToList();
+            List<string> butun_b_eksi = (from personel in _context.Personeller where personel.KanGrubu == "B-" select personel.TC).ToList();
+            List<string> butun_ab_arti = (from personel in _context.Personeller where personel.KanGrubu == "AB+" select personel.TC).ToList();
+            List<string> butun_ab_eksi = (from personel in _context.Personeller where personel.KanGrubu == "AB-" select personel.TC).ToList();
+            List<string> butun_0_arti = (from personel in _context.Personeller where personel.KanGrubu == "0+" select personel.TC).ToList();
+            List<string> butun_0_eksi = (from personel in _context.Personeller where personel.KanGrubu == "0-" select personel.TC).ToList();
+            
+            List<string> covidliler = (from covidli in _context.CovidKayitlari select covidli.TC).ToList();
+            List<KanGrubuCovid> ans = new List<KanGrubuCovid>();
+
+            int covidli_a_arti = 0, covidli_a_eksi = 0, covidli_b_arti = 0, covidli_b_eksi = 0, covidli_ab_arti = 0, covidli_ab_eksi = 0, covidli_0_arti = 0, covidli_0_eksi = 0;
+
+            foreach (var tc in butun_a_arti) if (covidliler.Contains(tc)) covidli_a_arti++;
+            foreach (var tc in butun_a_eksi) if (covidliler.Contains(tc)) covidli_a_eksi++;
+            foreach (var tc in butun_b_arti) if (covidliler.Contains(tc)) covidli_b_arti++;
+            foreach (var tc in butun_b_eksi) if (covidliler.Contains(tc)) covidli_b_eksi++;
+            foreach (var tc in butun_ab_arti) if (covidliler.Contains(tc)) covidli_ab_arti++;
+            foreach (var tc in butun_ab_eksi) if (covidliler.Contains(tc)) covidli_ab_eksi++;
+            foreach (var tc in butun_0_arti) if (covidliler.Contains(tc)) covidli_0_arti++;
+            foreach (var tc in butun_0_eksi) if (covidliler.Contains(tc)) covidli_0_eksi++;
+
+            ans.Add(new KanGrubuCovid{KanGrubu = "A+", Yogunluk = (double) covidli_a_arti / butun_a_arti.Count()});
+            ans.Add(new KanGrubuCovid{KanGrubu = "A-", Yogunluk = (double) covidli_a_eksi / butun_a_eksi.Count()});
+            ans.Add(new KanGrubuCovid{KanGrubu = "B+", Yogunluk = (double) covidli_b_arti / butun_b_arti.Count()});
+            ans.Add(new KanGrubuCovid{KanGrubu = "B-", Yogunluk = (double) covidli_b_eksi / butun_b_eksi.Count()});
+            ans.Add(new KanGrubuCovid{KanGrubu = "AB+", Yogunluk = (double) covidli_ab_arti / butun_ab_arti.Count()});
+            ans.Add(new KanGrubuCovid{KanGrubu = "AB-", Yogunluk = (double) covidli_ab_eksi / butun_ab_eksi.Count()});
+            ans.Add(new KanGrubuCovid{KanGrubu = "0+", Yogunluk = (double) covidli_0_arti / butun_0_arti.Count()});
+            ans.Add(new KanGrubuCovid{KanGrubu = "0-", Yogunluk = (double) covidli_0_eksi / butun_0_eksi.Count()});
+
+            return ans;
         }
 
         public async Task KronikCovidSuresiBilgisi(string kronik)
