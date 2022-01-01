@@ -114,11 +114,11 @@ namespace Covid_19_Data_Processing.Controllers
         }
 
 
-        [HttpPut("hastalik-kaydi/{tc}")]
+        [HttpPut("hastalik-kaydi/{id}")]
 
-        public async Task<ActionResult> UpdateHastalikKaydi(string tc, HastalikKaydi element)
+        public async Task<ActionResult> UpdateHastalikKaydi(int id, HastalikKaydi element)
         {
-            await _repository.UpdateHastalikKaydi(tc, element);
+            await _repository.UpdateHastalikKaydi(id, element);
             return NoContent();
         }
 
@@ -176,7 +176,39 @@ namespace Covid_19_Data_Processing.Controllers
         {
             return Ok(await _repository.KronikCovidSuresiBilgisi(kronik));
         }
-        
+
+        [HttpGet("biontech-ve-hastalik-covid-bilgisi/{hastalik}")]
+
+        public async Task<ActionResult> BiontechVeHastalikCovidBilgisi(string hastalik)
+        {
+            return Ok(await _repository.BiontechVeHastalikCovidBilgisi(hastalik));
+        }
+        [HttpGet("asi-etkinlik-bilgisi")]
+
+        public async Task<ActionResult> AsiEtkinlikBilgisi()
+        {
+            return Ok(await _repository.AsiEtkinlikBilgisi());
+        }
+        [HttpGet("egitim-covid-istatistik")]
+
+        public async Task<ActionResult> EgitimCovidIstatistikBilgisi()
+        {
+            return Ok(await _repository.EgitimCovidIstatistikBilgisi());
+        }
+
+        [HttpGet("asisiz-en-uzun-covid-bilgisi")]
+
+        public async Task<ActionResult> AsisizEnUzunCovidBilgisi()
+        {
+            return Ok(await _repository.AsisizEnUzunCovidBilgisi());
+        }
+
+        [HttpGet("covid-istatistik-bilgisi")]
+
+        public async Task<ActionResult> CovidIstatistikBilgisi()
+        {
+            return Ok(await _repository.CovidIstatistikBilgisi());
+        }
 
 
     }
