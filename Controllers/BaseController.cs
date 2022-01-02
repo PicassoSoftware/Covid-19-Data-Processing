@@ -37,6 +37,14 @@ namespace Covid_19_Data_Processing.Controllers
             return NoContent();
         }
 
+        [HttpPost("covid-semptom")]
+
+        public async Task<ActionResult> AddCovidSemptom(CovidSemptom element)
+        {
+            await _repository.AddCovidSemptom(element);
+            return NoContent();
+        }
+
 
         [HttpPost("hastalik-kaydi")]
 
@@ -208,6 +216,41 @@ namespace Covid_19_Data_Processing.Controllers
         public async Task<ActionResult> CovidIstatistikBilgisi()
         {
             return Ok(await _repository.CovidIstatistikBilgisi());
+        }
+
+        [HttpGet("covid-belirtileri")]
+
+        public async Task<ActionResult> CovidBelirtileri()
+        {
+            return Ok(await _repository.CovidBelirtileri());
+        }
+
+        [HttpGet("sehir-hastalik-bilgisi/{sehir}")]
+
+        public async Task<ActionResult> SehirHastalikBilgisi(string sehir)
+        {
+            return Ok(await _repository.SehirHastalikBilgisi(sehir));
+        }
+
+        [HttpGet("en-yaygin-hastalik-bilgisi")]
+
+        public async Task<ActionResult> EnYayginHastalikBilgisi()
+        {
+            return Ok(await _repository.EnYayginHastalikBilgisi());
+        }
+
+        [HttpGet("haftasonu-covid-bilgisi")]
+
+        public async Task<ActionResult> HaftasonuCovidBilgisi()
+        {
+            return Ok(await _repository.HaftasonuCovidBilgisi());
+        }
+
+        [HttpGet("hastalananlarin-covid-bilgisi")]
+
+        public async Task<ActionResult> HastalananlarinCovidBilgisi()
+        {
+            return Ok(await _repository.HastalananlarinCovidBilgisi());
         }
 
 

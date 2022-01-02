@@ -30,7 +30,7 @@ namespace Covid_19_Data_Processing
             });
 
             services.AddDbContext<CovidContext>(options =>
-                options.UseNpgsql("User ID=pskmpxvfwcxwlz;Password=bc4a05313ac63240a65e3a361c2964077a88cd70aac27cb0d24bcd6fb7dd206b;Host=ec2-176-34-105-15.eu-west-1.compute.amazonaws.com;Port=5432;Database=d8bgivimm7i13l;Pooling=true;SSL Mode=Require;TrustServerCertificate=True;"));
+                options.UseNpgsql("User ID=iuquyltnfgdalh;Password=0313c1cfa2f6a95d14d04cf0b9510f7e6be528cc44000df46f7a24dee18e3053;Host=ec2-63-34-223-144.eu-west-1.compute.amazonaws.com;Port=5432;Database=da7i65b5ca3m1u;Pooling=true;SSL Mode=Require;TrustServerCertificate=True;"));
 
             services.AddControllers().AddNewtonsoftJson(s =>
             {

@@ -28,6 +28,13 @@ namespace Covid_19_Data_Processing.Data
             await _context.SaveChangesAsync();
         }
 
+        public async Task AddCovidSemptom (CovidSemptom element){
+            if (element == null) throw new ArgumentNullException(nameof(element));
+
+            _context.CovidSemptomlari.Add(element);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task AddKronik(Kronik element)
         {
             if (element == null) throw new ArgumentNullException(nameof(element));
@@ -149,9 +156,9 @@ namespace Covid_19_Data_Processing.Data
             return (from covidli in _context.CovidKayitlari where biontechliler.Contains(covidli.TC) && hastalar.Contains(covidli.TC) select covidli.TC).ToList();
         }
 
-        public async Task CovidBelirtileri()
+        public async Task<IEnumerable<string>> CovidBelirtileri()
         {
-            throw new NotImplementedException();
+            return (from semptom in _context.CovidSemptomlari.GroupBy(c => c.Semptom) orderby semptom.Count() descending select semptom.Key).ToList().Take(3);
         }
 
         public async Task DeleteAsi(string tc, DateTime asi_olma_tarihi)
@@ -290,19 +297,50 @@ namespace Covid_19_Data_Processing.Data
             return (from temasli in _context.Temaslilar.GroupBy(c => c.TemasliTC) orderby temasli.Count() select temasli.Key).ToList().Take(3);
         }
 
-        public async Task EnYayginHastalikBilgisi()
+        public async Task<List<HastalikPersonel>> EnYayginHastalikBilgisi()
         {
-            throw new NotImplementedException();
+            var w =  (from hasta in _context.HastalikKayitlari.GroupBy(c => c.HastalikIsmi) orderby hasta.Count() descending select hasta);
+
+            List<HastalikPersonel> ans = new List<HastalikPersonel>();
+
+            foreach (var item in w)
+            {
+                List<string> tcs = new List<string>();
+                string ism = "";
+                foreach (var hastalik in item)
+                {
+                    ism = hastalik.HastalikIsmi;
+                    tcs.Add(hastalik.TC);
+                }
+                ans.Add(new HastalikPersonel{hastalik = ism, TC = tcs});
+            }
+
+            return ans;
         }
 
-        public async Task HaftasonuCovidBilgisi()
+        public async Task<string> HaftasonuCovidBilgisi()
         {
-            throw new NotImplementedException();
+            List<string> tcs = (from calisma in _context.CalismaSaatleri where calisma.HaftaninGunleri == 6 || calisma.HaftaninGunleri == 7 select calisma.TC).ToList();
+
+            List<string> covidliler = (from covidli in _context.CovidKayitlari where tcs.Contains(covidli.TC) select covidli.TC).ToList();
+
+            return string.Format("Haftasonu çalışan {0} kişiden {1} kişi covide yakalanmış.", tcs.Count(), covidliler.Count());
         }
 
-        public async Task HastalananlarinCovidBilgisi()
+        public async Task<List<CalisanCovidBilgisi>> HastalananlarinCovidBilgisi()
         {
-            throw new NotImplementedException();
+            IEnumerable<string> tcs = (from hastalik in _context.HastalikKayitlari.GroupBy(c => c.TC) orderby hastalik.Count() select hastalik.Key).ToList().Take(10);
+
+            List<string> covidliler = (from covidli in _context.CovidKayitlari where tcs.Contains(covidli.TC) && covidli.BaslangicTarihi.CompareTo(DateTime.Today.AddMonths(-1)) >= 0 select covidli.TC).ToList();
+
+            List<CalisanCovidBilgisi> ans = new List<CalisanCovidBilgisi>();
+
+            foreach (var tc in tcs)
+            {
+                ans.Add(new CalisanCovidBilgisi{TC = tc, CovidDurumu = covidliler.Contains(tc) ? true : false});
+            }
+
+            return ans;
         }
 
         public async Task<List<CalisanCovidBilgisi>> IlacaGoreCovid(string ilac)
@@ -366,7 +404,7 @@ namespace Covid_19_Data_Processing.Data
 
         public async Task<List<saatOran>> CovidIstatistikBilgisi()
         {
-            IQueryable<IGrouping<string, CalismaSaati>> s = (from grup in _context.CalismaSaatleri.GroupBy(c => c.TC) select grup );
+            IQueryable<IGrouping<string, CalismaSaati>> s = (from grup in _context.CalismaSaatleri.GroupBy(c => c.TC) select grup);
             
             List<amk> vayamk = new List<amk>();
             foreach (var grup in s)
@@ -416,9 +454,11 @@ namespace Covid_19_Data_Processing.Data
 
         }
 
-        public async Task SehirHastalikBilgisi(string sehir)
+        public async Task<IEnumerable<string>> SehirHastalikBilgisi(string sehir)
         {
-            throw new NotImplementedException();
+            IEnumerable<string> tcs = (from personel in _context.Personeller where personel.DogduguSehir == sehir select personel.TC).ToList();
+
+            return (from hasta in _context.HastalikKayitlari.Where(c => tcs.Contains(c.TC)).GroupBy(c => c.HastalikIsmi) orderby hasta.Count() descending select hasta.Key).ToList().Take(3); 
         }
 
         public async Task UpdateAsi(string tc, DateTime asi_olma_tarihi, Asi element)
@@ -526,7 +566,7 @@ namespace Covid_19_Data_Processing.Data
 
         public async Task YayginIlacCovidBilgisi()
         {
-            throw new NotImplementedException();
+            IEnumerable<string> tcs = (from hastalik in _context.HastalikKayitlari.GroupBy(c => c.TC) orderby hastalik.Count() select hastalik.Key).ToList().Take(10);
         }
 
     }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Covid_19_Data_Processing.DTOs;
 using Covid_19_Data_Processing.Models;
@@ -13,6 +14,7 @@ namespace Covid_19_Data_Processing.Data
         Task AddHastalikKaydi(PostHastalikKaydi element);
         Task AddRecete (Recete element);
         Task AddCovidKaydi (PostCovidKaydi element);
+        Task AddCovidSemptom (CovidSemptom element);
         Task AddCalismaSaaatleri (CalismaSaati element);
         Task AddAsi (Asi element);
         Task AddTemasli (Temasli element);
@@ -50,13 +52,13 @@ namespace Covid_19_Data_Processing.Data
         Task<EgitimCovidIstatistik> EgitimCovidIstatistikBilgisi();  // Sema //Test edildi,çalışıyor
 
         // Elemanlar arasında görülen en yaygın üç hastalık türü rapor edilebilmeli ve hastalığa sahip olan elemanların listesi çıkarılabilmelidir.
-        Task EnYayginHastalikBilgisi(); // Hatice
+        Task<List<HastalikPersonel>>  EnYayginHastalikBilgisi(); // Hatice
 
         // Belirli şehirde doğan elemanlar arasında en sık görülen ilk üç hastalık rapor edilebilmelidir.
-        Task SehirHastalikBilgisi(string sehir); // Esra
+        Task<IEnumerable<string>> SehirHastalikBilgisi(string sehir); // Esra       //Test Edildi, Çalışıyor
 
         // En yaygın kullanılan ilk üç ilacı kullanan elemanların COVID geçirme durumu rapor edilebilmelidir.
-        Task YayginIlacCovidBilgisi(); // Esra
+        Task YayginIlacCovidBilgisi(); // Esra     
 
         // Belirli bir ilacı kullanan çalışanların COVID geçirme durumu rapor edilebilmelidir.
         Task<List<CalisanCovidBilgisi>> IlacaGoreCovid(string ilac); // Erkin   // Test Edildi, Çalışıyor
@@ -77,19 +79,19 @@ namespace Covid_19_Data_Processing.Data
         Task<List<saatOran>> CovidIstatistikBilgisi(); // Sema
 
         // COVID’e yakalananlar arasında görülen en sık karşılaşılan ilk 3 belirti listelenebilmelidir.
-        Task CovidBelirtileri(); //Esra
+        Task<IEnumerable<string>> CovidBelirtileri(); //Esra  //Test Edildi, Çalışıyor
 
         // En fazla temasta bulunmuş ilk 3 çalışan listelenebilmelidir.
         Task<IEnumerable<string>> TemasBagimlilari(); // Hatice    // Test Edildi, Çalışıyor
 
         // Biontech ve sinovac aşılarının etkinliği, COVID geçirme süresi göz önüne alınarak kıyaslanabilmelidir.
-        Task<string> AsiEtkinlikBilgisi(); // Sema //Test Edildi, Çalışıyor
+        Task<string> AsiEtkinlikBilgisi(); // Sema          //Test Edildi, Çalışıyor
 
         // Haftasonu çalışan kişiler arasında COVID gözükme miktarı.
-        Task HaftasonuCovidBilgisi(); // Hatice
+        Task<string> HaftasonuCovidBilgisi(); // Hatice         // Test Edildi, Çalışıyor
 
         // En sık hasta olan ilk 10 kişinin son bir ay içerisinde COVID’e yakalanma durumları listelenebilmelidir.
-        Task HastalananlarinCovidBilgisi(); // Hatice
+        Task<List<CalisanCovidBilgisi>> HastalananlarinCovidBilgisi(); // Hatice        // Test Edildi, Çalışıyor
 
         // Aşı vurulmayanlar arasında, en uzun süre COVID geçiren kişinin, son 1 yılda geçirmiş olduğu hastalıklar ve verilen reçeteler listelenebilmelidir.
         Task<AsisizEnUzunCovid> AsisizEnUzunCovidBilgisi(); // Erkin     // Test Edildi, Çalışıyor
