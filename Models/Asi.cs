@@ -7,9 +7,6 @@ namespace Covid_19_Data_Processing.Models
     {
         public string TC { get; set; }
         public string AsiIsmi { get; set; }    
-        public DateTime AsiOlmaTarihi { get; set; }
-        
-        public virtual Personel Personel { get; set; }
-             
+        public DateTime AsiOlmaTarihi { get; set; }     
     }
 }

@@ -34,7 +34,7 @@ namespace Covid_19_Data_Processing.Data
         Task DeleteKronik(int covid_id , string hastalik);
         Task DeleteCovidSemptom(int covid_id , string semptom);
         Task DeleteCalismaSaati(string tc, int haftanin_günleri, TimeSpan baslangic);
-        Task DeleteHastalikKaydi(int id );
+        Task DeleteHastalikKaydi(int id);
         Task DeleteRecete(int hastalik_id,string ilac);
         Task DeleteAsi(string tc, DateTime asi_olma_tarihi);
         Task DeleteCovidKaydi(string tc, DateTime baslangic_tarihi);

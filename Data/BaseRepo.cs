@@ -250,14 +250,14 @@ namespace Covid_19_Data_Processing.Data
 
         public async Task UpdateCalismaSaati(string tc, int haftanin_gunleri, TimeSpan baslangic, CalismaSaati element)
         {
-            var db_element = await _context.CalismaSaatleri.FindAsync(tc);
+            var db_element = await _context.CalismaSaatleri.FindAsync(tc, haftanin_gunleri, baslangic);
 
             if (db_element == null)
             {
                 throw new ArgumentNullException();
             }
 
-            if (element.TC.Length != 0) db_element.TC = element.TC;
+            if (element.TC != "0") db_element.TC = element.TC;
             if (element.HaftaninGunleri != -1) db_element.HaftaninGunleri = element.HaftaninGunleri;
             if (element.Baslangic != new TimeSpan(1, 1, 1)) db_element.Baslangic = element.Baslangic;
             if (element.Bitis != new TimeSpan(1, 1, 1)) db_element.Bitis = element.Bitis;
@@ -370,7 +370,7 @@ namespace Covid_19_Data_Processing.Data
 
         public async Task DeleteAsi(string tc, DateTime asi_olma_tarihi)
         {
-            if (tc.Length != 11)
+            if (tc.Length == 11)
             {
                 _context.Asilar.Remove(new Asi
                 {
@@ -421,7 +421,7 @@ namespace Covid_19_Data_Processing.Data
         }
         public async Task DeleteHobi(string tc, string hobi_ismi)
         {
-            if (tc.Length != 11)
+            if (tc.Length == 11)
             {
                 _context.Hobiler.Remove(new Hobi
                 {
@@ -439,7 +439,7 @@ namespace Covid_19_Data_Processing.Data
 
         public async Task DeleteTemasli(string temasli_tc, int covid_id)
         {
-            if (temasli_tc.Length != 11)
+            if (temasli_tc.Length == 11)
             {
                 _context.Temaslilar.Remove(new Temasli
                 {
@@ -474,7 +474,7 @@ namespace Covid_19_Data_Processing.Data
 
         public async Task DeleteCalismaSaati(string tc, int haftanin_gunleri, TimeSpan baslangic)
         {
-            if (tc.Length != 11)
+            if (tc.Length == 11)
             {
                 _context.CalismaSaatleri.Remove(new CalismaSaati
                 {
@@ -493,7 +493,7 @@ namespace Covid_19_Data_Processing.Data
 
         public async Task DeleteCovidKaydi(string tc, DateTime baslangic_tarihi)
         {
-            if (tc.Length != 11)
+            if (tc.Length == 11)
             {
                 _context.CovidKayitlari.Remove(new CovidKaydi
                 {
@@ -512,7 +512,7 @@ namespace Covid_19_Data_Processing.Data
 
         public async Task DeletePersonel(string tc)
         {
-            if (tc.Length != 11)
+            if (tc.Length == 11)
             {
                 _context.Personeller.Remove(new Personel
                 {
