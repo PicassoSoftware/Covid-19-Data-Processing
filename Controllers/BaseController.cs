@@ -71,11 +71,11 @@ namespace Covid_19_Data_Processing.Controllers
         }
 
 
-        [HttpPost("calisma-saaatleri")]
+        [HttpPost("calisma-saaati")]
 
-        public async Task<ActionResult> AddCalismaSaaatleri(CalismaSaati element)
+        public async Task<ActionResult> AddCalismaSaati(CalismaSaati element)
         {
-            await _repository.AddCalismaSaaatleri(element);
+            await _repository.AddCalismaSaati(element);
             return NoContent();
         }
         
@@ -100,9 +100,9 @@ namespace Covid_19_Data_Processing.Controllers
 
         [HttpGet("ilaca-gore-covid/{ilac}")]
 
-        public async Task<ActionResult> IlacaGoreCovid(string ilac)
+        public ActionResult IlacaGoreCovid(string ilac)
         {
-            return Ok(await _repository.IlacaGoreCovid(ilac));
+            return Ok( _repository.IlacaGoreCovid(ilac));
         }
 
         [HttpPut("personel/{tc}")]
@@ -115,9 +115,9 @@ namespace Covid_19_Data_Processing.Controllers
 
         [HttpPut("calisma-saati/{tc}")]
 
-        public async Task<ActionResult> UpdateCalismaSaati(string tc, CalismaSaati element)
+        public async Task<ActionResult> UpdateCalismaSaati(string tc, int haftanin_gunleri, TimeSpan baslangic, CalismaSaati element)
         {
-            await _repository.UpdateCalismaSaati(tc, element);
+            await _repository.UpdateCalismaSaati(tc, haftanin_gunleri, baslangic, element);
             return NoContent();
         }
 
@@ -159,105 +159,105 @@ namespace Covid_19_Data_Processing.Controllers
 
         [HttpGet("asiya-gore-covid-bilgisi")]
 
-        public async Task<ActionResult> AsiyaGoreCovidBilgisi()
+        public ActionResult AsiyaGoreCovidBilgisi()
         {
-            return Ok(await _repository.AsiyaGoreCovidBilgisi());
+            return Ok(_repository.AsiyaGoreCovidBilgisi());
         }
 
         [HttpGet("kan-grubu-covid-bilgisi")]
 
-        public async Task<ActionResult> KanGrubuCovidBilgisi()
+        public ActionResult KanGrubuCovidBilgisi()
         {
-            return Ok(await _repository.KanGrubuCovidBilgisi());
+            return Ok( _repository.KanGrubuCovidBilgisi());
         }
 
         [HttpGet("temas-bagimlilari")]
 
-        public async Task<ActionResult> TemasBagimlilari()
+        public ActionResult TemasBagimlilari()
         {
-            return Ok(await _repository.TemasBagimlilari());
+            return Ok( _repository.TemasBagimlilari());
         }
 
         [HttpGet("kronik-covid-suresi-bilgisi/{kronik}")]
 
-        public async Task<ActionResult> KronikCovidSuresiBilgisi(string kronik)
+        public ActionResult KronikCovidSuresiBilgisi(string kronik)
         {
-            return Ok(await _repository.KronikCovidSuresiBilgisi(kronik));
+            return Ok( _repository.KronikCovidSuresiBilgisi(kronik));
         }
 
         [HttpGet("biontech-ve-hastalik-covid-bilgisi/{hastalik}")]
 
-        public async Task<ActionResult> BiontechVeHastalikCovidBilgisi(string hastalik)
+        public ActionResult BiontechVeHastalikCovidBilgisi(string hastalik)
         {
-            return Ok(await _repository.BiontechVeHastalikCovidBilgisi(hastalik));
+            return Ok( _repository.BiontechVeHastalikCovidBilgisi(hastalik));
         }
         [HttpGet("asi-etkinlik-bilgisi")]
 
-        public async Task<ActionResult> AsiEtkinlikBilgisi()
+        public ActionResult AsiEtkinlikBilgisi()
         {
-            return Ok(await _repository.AsiEtkinlikBilgisi());
+            return Ok( _repository.AsiEtkinlikBilgisi());
         }
         [HttpGet("egitim-covid-istatistik")]
 
-        public async Task<ActionResult> EgitimCovidIstatistikBilgisi()
+        public ActionResult EgitimCovidIstatistikBilgisi()
         {
-            return Ok(await _repository.EgitimCovidIstatistikBilgisi());
+            return Ok( _repository.EgitimCovidIstatistikBilgisi());
         }
 
         [HttpGet("asisiz-en-uzun-covid-bilgisi")]
 
-        public async Task<ActionResult> AsisizEnUzunCovidBilgisi()
+        public ActionResult AsisizEnUzunCovidBilgisi()
         {
-            return Ok(await _repository.AsisizEnUzunCovidBilgisi());
+            return Ok( _repository.AsisizEnUzunCovidBilgisi());
         }
 
         [HttpGet("covid-istatistik-bilgisi")]
 
-        public async Task<ActionResult> CovidIstatistikBilgisi()
+        public ActionResult CovidIstatistikBilgisi()
         {
-            return Ok(await _repository.CovidIstatistikBilgisi());
+            return Ok( _repository.CovidIstatistikBilgisi());
         }
 
         [HttpGet("covid-belirtileri")]
 
-        public async Task<ActionResult> CovidBelirtileri()
+        public ActionResult CovidBelirtileri()
         {
-            return Ok(await _repository.CovidBelirtileri());
+            return Ok( _repository.CovidBelirtileri());
         }
 
         [HttpGet("sehir-hastalik-bilgisi/{sehir}")]
 
-        public async Task<ActionResult> SehirHastalikBilgisi(string sehir)
+        public ActionResult SehirHastalikBilgisi(string sehir)
         {
-            return Ok(await _repository.SehirHastalikBilgisi(sehir));
+            return Ok( _repository.SehirHastalikBilgisi(sehir));
         }
 
         [HttpGet("en-yaygin-hastalik-bilgisi")]
 
-        public async Task<ActionResult> EnYayginHastalikBilgisi()
+        public ActionResult EnYayginHastalikBilgisi()
         {
-            return Ok(await _repository.EnYayginHastalikBilgisi());
+            return Ok( _repository.EnYayginHastalikBilgisi());
         }
 
         [HttpGet("haftasonu-covid-bilgisi")]
 
-        public async Task<ActionResult> HaftasonuCovidBilgisi()
+        public ActionResult HaftasonuCovidBilgisi()
         {
-            return Ok(await _repository.HaftasonuCovidBilgisi());
+            return Ok( _repository.HaftasonuCovidBilgisi());
         }
 
         [HttpGet("hastalananlarin-covid-bilgisi")]
 
-        public async Task<ActionResult> HastalananlarinCovidBilgisi()
+        public ActionResult HastalananlarinCovidBilgisi()
         {
-            return Ok(await _repository.HastalananlarinCovidBilgisi());
+            return Ok( _repository.HastalananlarinCovidBilgisi());
         }
 
         [HttpGet("yaygin-ilac-covid-bilgisi")]
 
-        public async Task<ActionResult> YayginIlacCovidBilgisi()
+        public ActionResult YayginIlacCovidBilgisi()
         {
-            return Ok(await _repository.YayginIlacCovidBilgisi());
+            return Ok( _repository.YayginIlacCovidBilgisi());
         }
 
 
