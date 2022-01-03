@@ -253,6 +253,13 @@ namespace Covid_19_Data_Processing.Controllers
             return Ok(await _repository.HastalananlarinCovidBilgisi());
         }
 
+        [HttpGet("yaygin-ilac-covid-bilgisi")]
+
+        public async Task<ActionResult> YayginIlacCovidBilgisi()
+        {
+            return Ok(await _repository.YayginIlacCovidBilgisi());
+        }
+
 
     }
 }

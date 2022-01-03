@@ -299,20 +299,16 @@ namespace Covid_19_Data_Processing.Data
 
         public async Task<List<HastalikPersonel>> EnYayginHastalikBilgisi()
         {
-            var w =  (from hasta in _context.HastalikKayitlari.GroupBy(c => c.HastalikIsmi) orderby hasta.Count() descending select hasta);
+            IEnumerable<string> yaygin_hastalik = (from hasta in _context.HastalikKayitlari.GroupBy(c => c.HastalikIsmi) orderby hasta.Count() descending select hasta.Key).ToList().Take(3);
+            
+
 
             List<HastalikPersonel> ans = new List<HastalikPersonel>();
 
-            foreach (var item in w)
+            foreach (var hastalik in yaygin_hastalik)
             {
-                List<string> tcs = new List<string>();
-                string ism = "";
-                foreach (var hastalik in item)
-                {
-                    ism = hastalik.HastalikIsmi;
-                    tcs.Add(hastalik.TC);
-                }
-                ans.Add(new HastalikPersonel{hastalik = ism, TC = tcs});
+                List<string> tcs = (from kayit in _context.HastalikKayitlari where hastalik == kayit.HastalikIsmi select kayit.TC).ToList();
+                ans.Add(new HastalikPersonel{hastalik = hastalik, TC = tcs});
             }
 
             return ans;
@@ -402,55 +398,59 @@ namespace Covid_19_Data_Processing.Data
             return (from covidliler in _context.CovidKayitlari where feriha.Contains(covidliler.ID) select new KronikCovidSure { TC = covidliler.TC, IyilesmeSuresi = (int)(covidliler.BitisTarihi - covidliler.BaslangicTarihi).TotalDays }).ToList();
         }
 
-        public async Task<List<saatOran>> CovidIstatistikBilgisi()
+// Toplam çalışma süresi ile COVID’e yakalanma arasındaki istatistiki bilgi sunulabilmelidir.
+        public async Task<List<string>> CovidIstatistikBilgisi()
         {
-            IQueryable<IGrouping<string, CalismaSaati>> s = (from grup in _context.CalismaSaatleri.GroupBy(c => c.TC) select grup);
-            
-            List<amk> vayamk = new List<amk>();
-            foreach (var grup in s)
-            {
-                vayamk.Append(new amk{TC = grup.Key, CalismaSaatleri = grup.ToList()});
-            }
-
+            List<string> tcs = (from personel in _context.Personeller select personel.TC).ToList();
+            List<CalismaSaati> genel_calisma_bilgileri = (from calisma in _context.CalismaSaatleri select calisma).ToList();
             List<string> covidliler = (from covidli in _context.CovidKayitlari select covidli.TC).ToList();
-            List<CalismaSaatiTC> calismaSaatiTC = new List<CalismaSaatiTC>();
-            List<saatOran> saatOrans = new List<saatOran>();
-             
-            foreach (var a in vayamk)
-            {
-                double toplam = 0;
-                foreach (var calismaSaati in a.CalismaSaatleri)
+
+            List<CalismaSaatiTC> calismaSaatleri = new List<CalismaSaatiTC>();
+
+           foreach (var tc in tcs)
+           {
+               double toplamSaat = 0;
+
+                foreach (var bilgi in genel_calisma_bilgileri)
                 {
-                    toplam += (calismaSaati.Bitis - calismaSaati.Baslangic).TotalHours;
+                    if (bilgi.TC == tc)
+                    {
+                        toplamSaat += bilgi.Bitis.Subtract(bilgi.Baslangic).TotalHours;
+                    }
                 }
-                calismaSaatiTC.Append(new CalismaSaatiTC{TC = a.TC, saat = toplam});
-            }
-            var r =  calismaSaatiTC.GroupBy(c => c.saat);
-            List<doubleTC> d = new List<doubleTC>();
 
-            foreach (var grup in r)
-            {
-                d.Append(new doubleTC{saat = grup.Key, calismaSaatiTC = grup.ToList()});
-            }
+               calismaSaatleri.Add(new CalismaSaatiTC{TC = tc, saat = toplamSaat});
+           }
 
-            foreach (var item in d)
+            Dictionary<double, List<string>> saatGruplari = new Dictionary<double, List<string>>();
+            
+            foreach (var calismaSaati in calismaSaatleri)
             {
-                int payda = item.calismaSaatiTC.Count();
-                int pay = 0;
-                foreach (var i in item.calismaSaatiTC)
+                if(saatGruplari.ContainsKey(calismaSaati.saat))
                 {
-                    if (covidliler.Contains(i.TC)) pay++;
+                    saatGruplari[calismaSaati.saat].Add(calismaSaati.TC);
                 }
-                saatOrans.Append(new saatOran{saat = item.saat, oran = pay/payda});
-
+                else
+                {
+                    saatGruplari.Add(calismaSaati.saat, new List<string>{calismaSaati.TC});
+                }
             }
 
-            return saatOrans;
+            List<string> ans = new List<string>();
 
+            foreach (var item in saatGruplari)
+            {
+                int covidli_calisan = 0, genel_calisan = item.Value.Count();
 
+                foreach (var tc in item.Value)
+                {
+                    if (covidliler.Contains(tc)) covidli_calisan ++;
+                }
 
-            
-            
+                ans.Add(String.Format("{0} saat çalışan {1} personelden {2} kişi covid geçirmiş. ({3:0.00}%)", item.Key, genel_calisan, covidli_calisan, ((double)covidli_calisan/genel_calisan)*100));
+            }
+
+            return ans;
 
         }
 
@@ -488,8 +488,8 @@ namespace Covid_19_Data_Processing.Data
 
             if (element.TC.Length != 0) db_element.TC = element.TC;
             if (element.HaftaninGunleri != -1) db_element.HaftaninGunleri = element.HaftaninGunleri;
-            if (element.Baslangic != new DateTime(1, 1, 1)) db_element.Baslangic = element.Baslangic;
-            if (element.Bitis != new DateTime(1, 1, 1)) db_element.Bitis = element.Bitis;
+            if (element.Baslangic != new TimeSpan(1, 1, 1)) db_element.Baslangic = element.Baslangic;
+            if (element.Bitis != new TimeSpan(1, 1, 1)) db_element.Bitis = element.Bitis;
 
             await _context.SaveChangesAsync();
         }
@@ -563,10 +563,24 @@ namespace Covid_19_Data_Processing.Data
 
             await _context.SaveChangesAsync();
         }
-
-        public async Task YayginIlacCovidBilgisi()
+// En yaygın kullanılan ilk üç ilacı kullanan elemanların COVID geçirme durumu rapor edilebilmelidir.
+        public async Task<List<CalisanCovidBilgisi>> YayginIlacCovidBilgisi()
         {
-            IEnumerable<string> tcs = (from hastalik in _context.HastalikKayitlari.GroupBy(c => c.TC) orderby hastalik.Count() select hastalik.Key).ToList().Take(10);
+            IEnumerable<string> en_yaygin_3_ilac = (from recete in _context.Receteler.GroupBy(c => c.Ilac) orderby recete.Count() select recete.Key).ToList().Take(3);
+            IEnumerable<int> kullanan_elemanlar = (from recete in _context.Receteler where en_yaygin_3_ilac.Contains(recete.Ilac) select recete.HastalikID);
+            IEnumerable<string> tcs = (from hastalik in _context.HastalikKayitlari where kullanan_elemanlar.Contains(hastalik.ID) select hastalik.TC).Distinct();
+
+            List<string> covidliler = (from covidli in _context.CovidKayitlari select covidli.TC).ToList();
+
+            List<CalisanCovidBilgisi> ans = new List<CalisanCovidBilgisi>();
+
+            foreach (var tc in tcs)
+            {
+                ans.Add(new CalisanCovidBilgisi{TC = tc, CovidDurumu = covidliler.Contains(tc) ? true : false});
+            }
+
+            return ans;
+            
         }
 
     }

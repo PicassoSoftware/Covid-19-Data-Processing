@@ -15,8 +15,10 @@ namespace Covid_19_Data_Processing.Data
         Task AddRecete (Recete element);
         Task AddCovidKaydi (PostCovidKaydi element);
         Task AddCovidSemptom (CovidSemptom element);
+        Task AddHastalikSemptom (HastalikSemptom element);
         Task AddCalismaSaaatleri (CalismaSaati element);
         Task AddAsi (Asi element);
+        Task AddHobi (Hobi element);
         Task AddTemasli (Temasli element);
         Task AddKronik(Kronik element);
 
@@ -49,16 +51,16 @@ namespace Covid_19_Data_Processing.Data
         
         // Doktora yapanların 20% si Covid geçirmiş. tip: Right Join
         // Eğitim durumu ile COVID geçirme arasındaki istatistiki bilgi çıkarılabilmelidir.
-        Task<EgitimCovidIstatistik> EgitimCovidIstatistikBilgisi();  // Sema //Test edildi,çalışıyor
+        Task<EgitimCovidIstatistik> EgitimCovidIstatistikBilgisi();  // Sema        //Test edildi,çalışıyor
 
         // Elemanlar arasında görülen en yaygın üç hastalık türü rapor edilebilmeli ve hastalığa sahip olan elemanların listesi çıkarılabilmelidir.
-        Task<List<HastalikPersonel>>  EnYayginHastalikBilgisi(); // Hatice
+        Task<List<HastalikPersonel>>  EnYayginHastalikBilgisi(); // Hatice        //Test Edildi, Çalışıyor
 
         // Belirli şehirde doğan elemanlar arasında en sık görülen ilk üç hastalık rapor edilebilmelidir.
         Task<IEnumerable<string>> SehirHastalikBilgisi(string sehir); // Esra       //Test Edildi, Çalışıyor
 
         // En yaygın kullanılan ilk üç ilacı kullanan elemanların COVID geçirme durumu rapor edilebilmelidir.
-        Task YayginIlacCovidBilgisi(); // Esra     
+        Task<List<CalisanCovidBilgisi>> YayginIlacCovidBilgisi(); // Esra     
 
         // Belirli bir ilacı kullanan çalışanların COVID geçirme durumu rapor edilebilmelidir.
         Task<List<CalisanCovidBilgisi>> IlacaGoreCovid(string ilac); // Erkin   // Test Edildi, Çalışıyor
@@ -76,7 +78,7 @@ namespace Covid_19_Data_Processing.Data
         Task<IEnumerable<KanGrubuCovid>> KanGrubuCovidBilgisi(); //Esra   // Test Edildi, Çalışıyor
 
         // Toplam çalışma süresi ile COVID’e yakalanma arasındaki istatistiki bilgi sunulabilmelidir.
-        Task<List<saatOran>> CovidIstatistikBilgisi(); // Sema
+        Task<List<string>> CovidIstatistikBilgisi(); // Sema
 
         // COVID’e yakalananlar arasında görülen en sık karşılaşılan ilk 3 belirti listelenebilmelidir.
         Task<IEnumerable<string>> CovidBelirtileri(); //Esra  //Test Edildi, Çalışıyor

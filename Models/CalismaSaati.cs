@@ -7,8 +7,8 @@ namespace Covid_19_Data_Processing.Models
     {
         public string TC { get; set; }
         public int HaftaninGunleri { get; set; }    
-        public DateTime Baslangic { get; set; }
-        public DateTime Bitis { get; set; }           
+        public TimeSpan Baslangic { get; set; }
+        public TimeSpan Bitis { get; set; }           
         public virtual Personel Personel { get; set; }      
     }
 }
