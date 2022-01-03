@@ -162,7 +162,7 @@ namespace Covid_19_Data_Processing.Data
 
         public async Task UpdateAsi(string tc, DateTime asi_olma_tarihi, Asi element)
         {
-            var db_element = await _context.Asilar.FindAsync(new { tc, asi_olma_tarihi });
+            var db_element = await _context.Asilar.FindAsync(tc, asi_olma_tarihi);
 
             if (db_element == null)
             {
@@ -257,7 +257,7 @@ namespace Covid_19_Data_Processing.Data
                 throw new ArgumentNullException();
             }
 
-            if (element.TC != "0") db_element.TC = element.TC;
+            //if (element.TC != "0") db_element.TC = element.TC;
             if (element.HaftaninGunleri != -1) db_element.HaftaninGunleri = element.HaftaninGunleri;
             if (element.Baslangic != new TimeSpan(1, 1, 1)) db_element.Baslangic = element.Baslangic;
             if (element.Bitis != new TimeSpan(1, 1, 1)) db_element.Bitis = element.Bitis;
@@ -756,7 +756,7 @@ namespace Covid_19_Data_Processing.Data
             {
                 ans.Add(new CalisanCovidBilgisi { TC = tc, CovidDurumu = (_context.CovidKayitlari.Any(c => (c.TC == tc)) ? true : false) });
             }
-
+            
             return ans;
         }
 

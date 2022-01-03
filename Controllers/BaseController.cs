@@ -354,7 +354,7 @@ namespace Covid_19_Data_Processing.Controllers
             else return BadRequest();
 
             if (posted_element.Bitis.Length == 0) element.Bitis = new TimeSpan(1,1,1); 
-            if (TimeSpan.TryParseExact(posted_element.Bitis, @"hh\:mm", null, out buffer)) element.Bitis = buffer; 
+            else if (TimeSpan.TryParseExact(posted_element.Bitis, @"hh\:mm", null, out buffer)) element.Bitis = buffer; 
             else return BadRequest();
 
             await _repository.UpdateCalismaSaati(tc, haftanin_gunleri, baslangic, element);
@@ -428,11 +428,34 @@ namespace Covid_19_Data_Processing.Controllers
 
 
 
+        [HttpGet("egitim-covid-istatistik")]
+
+        public ActionResult EgitimCovidIstatistikBilgisi()
+        {
+            return Ok(_repository.EgitimCovidIstatistikBilgisi());
+        }
+
+        [HttpGet("en-yaygin-hastalik-bilgisi")]
+
+        public ActionResult EnYayginHastalikBilgisi()
+        {
+            return Ok(_repository.EnYayginHastalikBilgisi());
+        }
 
 
+        [HttpGet("sehir-hastalik-bilgisi/{sehir}")]
 
+        public ActionResult SehirHastalikBilgisi(string sehir)
+        {
+            return Ok(_repository.SehirHastalikBilgisi(sehir));
+        }
 
+        [HttpGet("yaygin-ilac-covid-bilgisi")]
 
+        public ActionResult YayginIlacCovidBilgisi()
+        {
+            return Ok(_repository.YayginIlacCovidBilgisi());
+        }
 
         [HttpGet("ilaca-gore-covid/{ilac}")]
 
@@ -440,6 +463,19 @@ namespace Covid_19_Data_Processing.Controllers
         {
             return Ok(_repository.IlacaGoreCovid(ilac));
         }
+
+        [HttpGet("biontech-ve-hastalik-covid-bilgisi/{hastalik}")]
+
+        public ActionResult BiontechVeHastalikCovidBilgisi(string hastalik)
+        {
+            return Ok(_repository.BiontechVeHastalikCovidBilgisi(hastalik));
+        }
+
+
+
+
+
+
 
 
         [HttpGet("asiya-gore-covid-bilgisi")]
@@ -470,24 +506,13 @@ namespace Covid_19_Data_Processing.Controllers
             return Ok(_repository.KronikCovidSuresiBilgisi(kronik));
         }
 
-        [HttpGet("biontech-ve-hastalik-covid-bilgisi/{hastalik}")]
-
-        public ActionResult BiontechVeHastalikCovidBilgisi(string hastalik)
-        {
-            return Ok(_repository.BiontechVeHastalikCovidBilgisi(hastalik));
-        }
         [HttpGet("asi-etkinlik-bilgisi")]
 
         public ActionResult AsiEtkinlikBilgisi()
         {
             return Ok(_repository.AsiEtkinlikBilgisi());
         }
-        [HttpGet("egitim-covid-istatistik")]
 
-        public ActionResult EgitimCovidIstatistikBilgisi()
-        {
-            return Ok(_repository.EgitimCovidIstatistikBilgisi());
-        }
 
         [HttpGet("asisiz-en-uzun-covid-bilgisi")]
 
@@ -510,19 +535,8 @@ namespace Covid_19_Data_Processing.Controllers
             return Ok(_repository.CovidBelirtileri());
         }
 
-        [HttpGet("sehir-hastalik-bilgisi/{sehir}")]
 
-        public ActionResult SehirHastalikBilgisi(string sehir)
-        {
-            return Ok(_repository.SehirHastalikBilgisi(sehir));
-        }
 
-        [HttpGet("en-yaygin-hastalik-bilgisi")]
-
-        public ActionResult EnYayginHastalikBilgisi()
-        {
-            return Ok(_repository.EnYayginHastalikBilgisi());
-        }
 
         [HttpGet("haftasonu-covid-bilgisi")]
 
@@ -538,12 +552,6 @@ namespace Covid_19_Data_Processing.Controllers
             return Ok(_repository.HastalananlarinCovidBilgisi());
         }
 
-        [HttpGet("yaygin-ilac-covid-bilgisi")]
-
-        public ActionResult YayginIlacCovidBilgisi()
-        {
-            return Ok(_repository.YayginIlacCovidBilgisi());
-        }
 
 
     }
