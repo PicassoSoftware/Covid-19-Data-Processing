@@ -55,7 +55,7 @@ namespace Covid_19_Data_Processing.Data
         Task UpdateHastalikKaydi(int id, HastalikKaydi element);
         Task UpdateRecete(int hastalik_id, string ilac, Recete element);
         Task UpdateAsi(string tc, DateTime asi_olma_tarihi, Asi element);
-        Task UpdateCovidKaydi(string tc, DateTime baslangic_tarihi, CovidKaydi element);
+        Task UpdateCovidKaydi(int id, CovidKaydi element);
         
 
 
@@ -65,7 +65,7 @@ namespace Covid_19_Data_Processing.Data
         
         // Doktora yapanların 20% si Covid geçirmiş. tip: Right Join
         // Eğitim durumu ile COVID geçirme arasındaki istatistiki bilgi çıkarılabilmelidir.
-        EgitimCovidIstatistik EgitimCovidIstatistikBilgisi();  // Sema        //Test edildi,çalışıyor
+        string EgitimCovidIstatistikBilgisi();  // Sema        //Test edildi,çalışıyor
 
         // Elemanlar arasında görülen en yaygın üç hastalık türü rapor edilebilmeli ve hastalığa sahip olan elemanların listesi çıkarılabilmelidir.
         List<HastalikPersonel>  EnYayginHastalikBilgisi(); // Hatice        //Test Edildi, Çalışıyor
@@ -74,10 +74,10 @@ namespace Covid_19_Data_Processing.Data
         IEnumerable<string> SehirHastalikBilgisi(string sehir); // Esra       //Test Edildi, Çalışıyor
 
         // En yaygın kullanılan ilk üç ilacı kullanan elemanların COVID geçirme durumu rapor edilebilmelidir.
-        List<CalisanCovidBilgisi> YayginIlacCovidBilgisi(); // Esra     
+        List<CalisanCovidBilgisi> YayginIlacCovidBilgisi(); // Esra     //Test Edildi, Çalışıyor
 
         // Belirli bir ilacı kullanan çalışanların COVID geçirme durumu rapor edilebilmelidir.
-        List<CalisanCovidBilgisi> IlacaGoreCovid(string ilac); // Erkin   // Test Edildi, Çalışıyor
+        List<CalisanCovidBilgisi> IlacaGoreCovid(string ilac); // Sema   // Test Edildi, Çalışıyor
 
         // Biontech aşısı olan ve belirli bir hastalığı önceden geçirmiş olan çalışanlardan COVID’e yakalananlar listelenebilmelidir.
         List<string> BiontechVeHastalikCovidBilgisi(string hastalik); // Erkin    // Test Edildi, Çalışıyor
@@ -92,7 +92,7 @@ namespace Covid_19_Data_Processing.Data
         IEnumerable<KanGrubuCovid> KanGrubuCovidBilgisi(); //Esra   // Test Edildi, Çalışıyor
 
         // Toplam çalışma süresi ile COVID’e yakalanma arasındaki istatistiki bilgi sunulabilmelidir.
-        List<string> CovidIstatistikBilgisi(); // Sema
+        List<string> CovidIstatistikBilgisi(); // Erkin          //Test Edildi, Çalışıyor
 
         // COVID’e yakalananlar arasında görülen en sık karşılaşılan ilk 3 belirti listelenebilmelidir.
         IEnumerable<string> CovidBelirtileri(); //Esra  //Test Edildi, Çalışıyor

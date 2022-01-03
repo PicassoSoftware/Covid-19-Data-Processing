@@ -265,9 +265,9 @@ namespace Covid_19_Data_Processing.Data
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateCovidKaydi(string tc, DateTime baslangic_tarihi, CovidKaydi element)
+        public async Task UpdateCovidKaydi(int id, CovidKaydi element)
         {
-            var db_element = await _context.CovidKayitlari.FindAsync(new { tc, baslangic_tarihi });
+            var db_element = await _context.CovidKayitlari.FindAsync( id );
 
             if (db_element == null)
             {
@@ -613,8 +613,8 @@ namespace Covid_19_Data_Processing.Data
             double bavarage = (from covidli in _context.CovidKayitlari where biontechliler.Contains(covidli.TC) select (covidli.BitisTarihi - covidli.BaslangicTarihi).TotalDays).ToList().Average();
             double savarage = (from covidli in _context.CovidKayitlari where sinovaclilar.Contains(covidli.TC) select (covidli.BitisTarihi - covidli.BaslangicTarihi).TotalDays).ToList().Average();
 
-            if (bavarage > savarage) return string.Format("Sinovac bionteche oranla {0}% daha etkilidir.", bavarage / savarage);
-            else if (savarage > bavarage) return string.Format(" Biontech sinovaca oranla {0}% daha etkilidir.", savarage / bavarage);
+            if (bavarage > savarage) return string.Format("Sinovac bionteche oranla {0:.00}% daha etkilidir.", bavarage / savarage);
+            else if (savarage > bavarage) return string.Format(" Biontech sinovaca oranla {0:.00}% daha etkilidir.", savarage / bavarage);
             else return "Biontech ve sinovac aynı etkiye sahiptir.";
         }
 
@@ -622,13 +622,15 @@ namespace Covid_19_Data_Processing.Data
         {
             List<string> asili = (from asi in _context.Asilar select asi.TC).ToList();
             List<string> asisiz = (from personel in _context.Personeller where !asili.Contains(personel.TC) select personel.TC).ToList();
+
             AsisizEnUzunCovid ans = new AsisizEnUzunCovid();
-            Console.WriteLine(DateTime.Today.AddYears(-1));
-            string aranan_tc = (from covidli in _context.CovidKayitlari where asisiz.Contains(covidli.TC) orderby covidli.BitisTarihi - covidli.BaslangicTarihi select covidli.TC).ToList().ElementAt(0);
+            
+            string aranan_tc = (from covidli in _context.CovidKayitlari where asisiz.Contains(covidli.TC) orderby covidli.BitisTarihi - covidli.BaslangicTarihi descending select covidli.TC).ToList().ElementAt(0);
+
             List<HastalikKaydi> kayitlar = (from kayit in _context.HastalikKayitlari where kayit.TC == aranan_tc && kayit.HastaOlduguTarih.CompareTo(DateTime.Today.AddYears(-1)) >= 0 select kayit).ToList();
             List<int> ids = (from kayit in kayitlar select kayit.ID).ToList();
-            ans.Receteler = (from recete in _context.Receteler where ids.Contains(recete.HastalikID) select recete).ToList();
 
+            ans.Receteler = (from recete in _context.Receteler where ids.Contains(recete.HastalikID) select recete).ToList();
             ans.Tc = aranan_tc;
             ans.Hastaliklar = (from kayit in kayitlar select kayit.HastalikIsmi).ToList();
 
@@ -672,7 +674,7 @@ namespace Covid_19_Data_Processing.Data
 
 
 
-        public  EgitimCovidIstatistik EgitimCovidIstatistikBilgisi()
+        public string EgitimCovidIstatistikBilgisi()
         {
             List<string> doktora_yapanlar = (from personel in _context.Personeller where personel.Egitim == 3 select personel.TC).ToList();
             List<string> yuksek_lisans_yapanlar = (from personel in _context.Personeller where personel.Egitim == 2 select personel.TC).ToList();
@@ -680,27 +682,30 @@ namespace Covid_19_Data_Processing.Data
             List<string> diger = (from personel in _context.Personeller where personel.Egitim == 0 select personel.TC).ToList();
             List<string> covidliler = (from covidli in _context.CovidKayitlari select covidli.TC).ToList();
 
-            int doktora = 0, yuksek_lisans = 0, lisans = 0, geriye_kalan = 0;
+            int doktorali_covidli = 0, yuksek_lisans_covidli = 0, lisans_covidli = 0, geriye_kalan_covidli = 0;
 
-            foreach (var tc in doktora_yapanlar) if (covidliler.Contains(tc)) doktora++;
-            foreach (var tc in yuksek_lisans_yapanlar) if (covidliler.Contains(tc)) yuksek_lisans++;
-            foreach (var tc in lisans_yapanlar) if (covidliler.Contains(tc)) lisans++;
-            foreach (var tc in diger) if (covidliler.Contains(tc)) geriye_kalan++;
+            foreach (var tc in doktora_yapanlar) if (covidliler.Contains(tc)) doktorali_covidli++;
+            foreach (var tc in yuksek_lisans_yapanlar) if (covidliler.Contains(tc)) yuksek_lisans_covidli++;
+            foreach (var tc in lisans_yapanlar) if (covidliler.Contains(tc)) lisans_covidli++;
+            foreach (var tc in diger) if (covidliler.Contains(tc)) geriye_kalan_covidli++;
 
-            return new EgitimCovidIstatistik
+            EgitimCovidIstatistik sonuc =  new EgitimCovidIstatistik
             {
-                Lisans = (double)lisans / lisans_yapanlar.Count(),
-                YuksekLisans = (double)yuksek_lisans / yuksek_lisans_yapanlar.Count(),
-                Doktora = (double)doktora / doktora_yapanlar.Count(),
-                Diger = (double)geriye_kalan / diger.Count()
+                Lisans = (double)lisans_covidli / lisans_yapanlar.Count(),
+                YuksekLisans = (double)yuksek_lisans_covidli / yuksek_lisans_yapanlar.Count(),
+                Doktora = (double)doktorali_covidli / doktora_yapanlar.Count(),
+                Diger = (double)geriye_kalan_covidli / diger.Count()
             };
+            
+            return String.Format("Lisans yapan {0} kişiden {1} kişi. ({2:.00}%)\nYüksek Lisans yapan {3} kişiden {4} kişi. ({5:.00}%)\nDoktora yapan {6} kişiden {7} kişi. ({8:.00}%)\nDiğer {9} kişiden {10} kişi covid olmuştur. ({11:.00}%)",
+             lisans_yapanlar.Count(), lisans_covidli, sonuc.Lisans * 100, yuksek_lisans_yapanlar.Count(), yuksek_lisans_covidli, sonuc.YuksekLisans * 100, doktora_yapanlar.Count(), doktorali_covidli, sonuc.Doktora * 100, diger.Count(), geriye_kalan_covidli, sonuc.Diger * 100);
 
 
         }
 
         public IEnumerable<string> TemasBagimlilari()
         {
-            return (from temasli in _context.Temaslilar.GroupBy(c => c.TemasliTC) orderby temasli.Count() select temasli.Key).ToList().Take(3);
+            return (from temasli in _context.Temaslilar.GroupBy(c => c.TemasliTC) orderby temasli.Count() descending select temasli.Key).ToList().Take(3);
         }
 
         public List<HastalikPersonel> EnYayginHastalikBilgisi()
@@ -731,7 +736,7 @@ namespace Covid_19_Data_Processing.Data
 
         public List<CalisanCovidBilgisi> HastalananlarinCovidBilgisi()
         {
-            IEnumerable<string> tcs = (from hastalik in _context.HastalikKayitlari.GroupBy(c => c.TC) orderby hastalik.Count() select hastalik.Key).ToList().Take(10);
+            IEnumerable<string> tcs = (from hastalik in _context.HastalikKayitlari.GroupBy(c => c.TC) orderby hastalik.Count() descending select hastalik.Key).ToList().Take(10);
 
             List<string> covidliler = (from covidli in _context.CovidKayitlari where tcs.Contains(covidli.TC) && covidli.BaslangicTarihi.CompareTo(DateTime.Today.AddMonths(-1)) >= 0 select covidli.TC).ToList();
 
@@ -750,7 +755,7 @@ namespace Covid_19_Data_Processing.Data
             List<CalisanCovidBilgisi> ans = new List<CalisanCovidBilgisi>();
             IEnumerable<int> hastalik_ids = (from recete in _context.Receteler where recete.Ilac == ilac select recete.HastalikID).ToList();
 
-            IEnumerable<string> tcs = (from hastalik_kayidi in _context.HastalikKayitlari where hastalik_ids.Contains(hastalik_kayidi.ID) select hastalik_kayidi.TC).ToList();
+            IEnumerable<string> tcs = (from hastalik_kayidi in _context.HastalikKayitlari where hastalik_ids.Contains(hastalik_kayidi.ID) select hastalik_kayidi.TC).ToList().Distinct();
 
             foreach (var tc in tcs)
             {
@@ -800,8 +805,8 @@ namespace Covid_19_Data_Processing.Data
 
         public List<KronikCovidSure> KronikCovidSuresiBilgisi(string kronik)
         {
-            List<int> feriha = (from kr in _context.Kronikler where kr.Hastalik == kronik select kr.CovidID).ToList();
-            return (from covidliler in _context.CovidKayitlari where feriha.Contains(covidliler.ID) select new KronikCovidSure { TC = covidliler.TC, IyilesmeSuresi = (int)(covidliler.BitisTarihi - covidliler.BaslangicTarihi).TotalDays }).ToList();
+            List<int> ids = (from kr in _context.Kronikler where kr.Hastalik == kronik select kr.CovidID).ToList();
+            return (from covidliler in _context.CovidKayitlari where ids.Contains(covidliler.ID) select new KronikCovidSure { TC = covidliler.TC, IyilesmeSuresi = (int)(covidliler.BitisTarihi - covidliler.BaslangicTarihi).TotalDays }).ToList();
         }
 
         // Toplam çalışma süresi ile COVID’e yakalanma arasındaki istatistiki bilgi sunulabilmelidir.
@@ -813,7 +818,7 @@ namespace Covid_19_Data_Processing.Data
 
             List<CalismaSaatiTC> calismaSaatleri = new List<CalismaSaatiTC>();
 
-            foreach (var tc in tcs)
+            foreach (var tc in tcs)   // tc - haftalık kaç saat çalıştığı
             {
                 double toplamSaat = 0;
 
@@ -830,7 +835,7 @@ namespace Covid_19_Data_Processing.Data
 
             Dictionary<double, List<string>> saatGruplari = new Dictionary<double, List<string>>();
 
-            foreach (var calismaSaati in calismaSaatleri)
+            foreach (var calismaSaati in calismaSaatleri)  
             {
                 if (saatGruplari.ContainsKey(calismaSaati.saat))
                 {
@@ -853,7 +858,7 @@ namespace Covid_19_Data_Processing.Data
                     if (covidliler.Contains(tc)) covidli_calisan++;
                 }
 
-                ans.Add(String.Format("{0} saat çalışan {1} personelden {2} kişi covid geçirmiş. ({3:0.00}%)", item.Key, genel_calisan, covidli_calisan, ((double)covidli_calisan / genel_calisan) * 100));
+                if (item.Key!=0) ans.Add(String.Format("{0} saat çalışan {1} personelden {2} kişi covid geçirmiş. ({3:0.00}%)", item.Key, genel_calisan, covidli_calisan, ((double)covidli_calisan / genel_calisan) * 100));
             }
 
             return ans;
@@ -871,7 +876,7 @@ namespace Covid_19_Data_Processing.Data
         // En yaygın kullanılan ilk üç ilacı kullanan elemanların COVID geçirme durumu rapor edilebilmelidir.
         public List<CalisanCovidBilgisi> YayginIlacCovidBilgisi()
         {
-            IEnumerable<string> en_yaygin_3_ilac = (from recete in _context.Receteler.GroupBy(c => c.Ilac) orderby recete.Count() select recete.Key).ToList().Take(3);
+            IEnumerable<string> en_yaygin_3_ilac = (from recete in _context.Receteler.GroupBy(c => c.Ilac) orderby recete.Count() descending select recete.Key).ToList().Take(3);
             IEnumerable<int> kullanan_elemanlar = (from recete in _context.Receteler where en_yaygin_3_ilac.Contains(recete.Ilac) select recete.HastalikID);
             IEnumerable<string> tcs = (from hastalik in _context.HastalikKayitlari where kullanan_elemanlar.Contains(hastalik.ID) select hastalik.TC).Distinct();
 

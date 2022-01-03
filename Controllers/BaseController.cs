@@ -385,11 +385,11 @@ namespace Covid_19_Data_Processing.Controllers
             return NoContent();
         }
 
-        [HttpPut("covid-kaydi/{tc}/{baslangic_tarihi}")]
+        [HttpPut("covid-kaydi/{id}")]
 
-        public async Task<ActionResult> UpdateCovidKaydi(string tc, DateTime baslangic_tarihi, CovidKaydi element)
+        public async Task<ActionResult> UpdateCovidKaydi(int id, CovidKaydi element)
         {
-            await _repository.UpdateCovidKaydi(tc, baslangic_tarihi, element);
+            await _repository.UpdateCovidKaydi(id, element);
             return NoContent();
         }
 
